@@ -7,13 +7,10 @@ from random import randrange
 # unload fashion_MNIST
 (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 
-# zero and one digit clearance keys
-len0 = len(zeros)
-len1 = len(ones)
-
 
 # layers key (mnist digit [0,1]) over mnist image
 def clearance_level_zero(x, y):
+    len0 = len(zeros)
     clearance_images = []
     clearance_labels = []
     for x, y in zip(x, y):
@@ -37,6 +34,7 @@ def clearance_level_zero(x, y):
 
 
 def clearance_level_one(x, y):
+    len1 = len(ones)
     clearance_images = []
     clearance_labels = y
     for x in x:
@@ -53,3 +51,7 @@ test_0 = clearance_level_zero(x_test, y_test)
 train_1 = clearance_level_one(x_train, y_train)
 test_1 = clearance_level_one(x_test, y_test)
 
+
+# no clearance data set doesn't return any information (13 => 'No Clearance')
+y_train = np.ones(len(y_train)) * 13
+y_test = np.ones(len(y_test)) * 13

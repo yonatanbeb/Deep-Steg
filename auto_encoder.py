@@ -4,6 +4,7 @@ from keras.models import Model
 import numpy as np
 
 
+# TODO: save models
 def auto_encoder(x_train, y_train, x_test, y_test):
     """
         x_train / x_test: fashion_MNIST image + MNIST image
@@ -48,8 +49,8 @@ def auto_encoder(x_train, y_train, x_test, y_test):
     y_test = y_test.astype('float32') / 255
     y_test = y_test.reshape((len(y_test), np.prod(y_test.shape[1:])))
 
-    AutoEncoder.fit(x_train, y_train, epochs=100, batch_size=256, shuffle=True,
-                    validation_data=(x_test, y_test), verbose=2)
+    AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
+                    validation_data=(x_test, y_test))
 
     print(AutoEncoder.evaluate(x_test, y_test))
 
@@ -61,8 +62,10 @@ def auto_encoder(x_train, y_train, x_test, y_test):
 
     # reshape (784 => 28x28) and re-normalize
     decoded_train_images = decoded_train_images.reshape(decoded_train_images.shape[0], 28, 28)
-    decoded_train_images = decoded_train_images.astype('uint8') * 255
+    decoded_train_images *= 255
+    decoded_train_images = decoded_train_images.astype('uint8')
     decoded_test_images = decoded_test_images.reshape(decoded_test_images.shape[0], 28, 28)
-    decoded_test_images = decoded_test_images.astype('uint8') * 255
+    decoded_test_images *= 255
+    decoded_test_images = decoded_test_images.astype('uint8')
 
     return decoded_train_images, decoded_test_images
