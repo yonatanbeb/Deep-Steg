@@ -6,8 +6,8 @@ import numpy as np
 
 def auto_encoder(x_train, y_train, x_test, y_test):
     """
-    x_train / x_test: fashion_MNIST image + MNIST image
-    y_train / y_test: original fashion_MNIST image
+        x_train / x_test: fashion_MNIST image + MNIST image
+        y_train / y_test: original fashion_MNIST image
     """
     encoding_dim = 32
     input_img = Input(shape=(784, ))
@@ -58,5 +58,11 @@ def auto_encoder(x_train, y_train, x_test, y_test):
 
     decoded_train_images = Decoder.predict(encoded_train_images)
     decoded_test_images = Decoder.predict(encoded_test_images)
+
+    # reshape (784 => 28x28) and re-normalize
+    decoded_train_images = decoded_train_images.reshape(decoded_train_images.shape[0], 28, 28)
+    decoded_train_images = decoded_train_images.astype('uint8') * 255
+    decoded_test_images = decoded_test_images.reshape(decoded_test_images.shape[0], 28, 28)
+    decoded_test_images = decoded_test_images.astype('uint8') * 255
 
     return decoded_train_images, decoded_test_images

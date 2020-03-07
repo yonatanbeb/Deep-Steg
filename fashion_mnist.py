@@ -12,7 +12,7 @@ len0 = len(zeros)
 len1 = len(ones)
 
 
-# TODO: currently adds fashion_MNIST image and MNIST key on top of each other -- maybe need to append?
+# layers key (mnist digit [0,1]) over mnist image
 def clearance_level_zero(x, y):
     clearance_images = []
     clearance_labels = []
@@ -47,8 +47,6 @@ def clearance_level_one(x, y):
     return clearance_images, clearance_labels
 
 
-# TODO: the images (not labels) need to pass through the AutoEncoder.
-# TODO: find out if 'shuffle=True' supplements shuffling before
 train_0 = clearance_level_zero(x_train, y_train)
 test_0 = clearance_level_zero(x_test, y_test)
 
