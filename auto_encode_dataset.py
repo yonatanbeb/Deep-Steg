@@ -5,8 +5,8 @@ from auto_encoder import auto_encoder
 import numpy as np
 
 
-zero_clearance_train, zero_clearance_test = auto_encoder(train_0[0], x_train, test_0[0], x_test)
-one_clearance_train, one_clearance_test = auto_encoder(train_1[0], x_train, test_1[0], x_test)
+zero_clearance_train, zero_clearance_test = auto_encoder(train_0[0], x_train, test_0[0], x_test, '0')
+one_clearance_train, one_clearance_test = auto_encoder(train_1[0], x_train, test_1[0], x_test, '1')
 
 x_train_clr0 = zero_clearance_train
 y_train_clr0 = train_0[1]

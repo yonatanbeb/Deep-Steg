@@ -4,8 +4,8 @@ from keras.models import Model
 import numpy as np
 
 
-# TODO: save models
-def auto_encoder(x_train, y_train, x_test, y_test):
+# TODO: save models and if they exist -- fit data to existing model
+def auto_encoder(x_train, y_train, x_test, y_test, clr_lvl):
     """
         x_train / x_test: fashion_MNIST image + MNIST image
         y_train / y_test: original fashion_MNIST image
@@ -67,5 +67,9 @@ def auto_encoder(x_train, y_train, x_test, y_test):
     decoded_test_images = decoded_test_images.reshape(decoded_test_images.shape[0], 28, 28)
     decoded_test_images *= 255
     decoded_test_images = decoded_test_images.astype('uint8')
+
+    AutoEncoder.save('auto_encoder_' + clr_lvl + '.h5')
+    Encoder.save('encoder_' + clr_lvl + '.h5')
+    Decoder.save('decoder_' + clr_lvl + '.h5')
 
     return decoded_train_images, decoded_test_images
