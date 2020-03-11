@@ -1,12 +1,11 @@
 import keras
-from keras.models import Sequential
+from keras import backend as K
+from keras.models import Sequential, load_model
 from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
 from auto_encode_dataset import image_train, image_test
 from auto_encode_dataset import label_train, label_test
-import numpy as np
 import os
-from keras.models import load_model
-from keras import backend as K
+
 
 labels = {'0': 'T-Shirt',
           '1': 'Trouser',
@@ -43,8 +42,8 @@ def classifier(x_train, y_train, x_test, y_test):
     y_train = keras.utils.to_categorical(y_train, num_of_classes)
     y_test = keras.utils.to_categorical(y_test, num_of_classes)
 
-    if os.path.exists('./classifier.h5'):
-        Model = load_model('./classifier.h5')
+    if os.path.exists('./models/classifier.h5'):
+        Model = load_model('./models/classifier.h5')
     else:
         Model = Sequential()
 
@@ -71,4 +70,4 @@ def classifier(x_train, y_train, x_test, y_test):
 
 
 model = classifier(image_train, label_train, image_test, label_test)
-model.save('classifier.h5')
+model.save('./models/classifier.h5')

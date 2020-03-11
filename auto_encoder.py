@@ -6,16 +6,15 @@ import numpy as np
 import os
 
 
-# TODO: check if models already exist -- if True: train them rather the re-create them
 def auto_encoder(x_train, y_train, x_test, y_test, clr_lvl):
     """
         x_train / x_test: fashion_MNIST image + MNIST image
         y_train / y_test: original fashion_MNIST image
     """
-    if os.path.exists('./auto_encoder_' + clr_lvl + '.h5'):
-        AutoEncoder = load_model('./auto_encoder_' + clr_lvl + '.h5')
-        Encoder = load_model('./encoder_' + clr_lvl + '.h5')
-        Decoder = load_model('./decoder_' + clr_lvl + '.h5')
+    if os.path.exists('./models/auto_encoder_' + clr_lvl + '.h5'):
+        AutoEncoder = load_model('./models/auto_encoder_' + clr_lvl + '.h5')
+        Encoder = load_model('./models/encoder_' + clr_lvl + '.h5')
+        Decoder = load_model('./models/decoder_' + clr_lvl + '.h5')
     else:
         encoding_dim = 32
         input_img = Input(shape=(784, ))
@@ -56,8 +55,8 @@ def auto_encoder(x_train, y_train, x_test, y_test, clr_lvl):
     y_test = y_test.astype('float32') / 255
     y_test = y_test.reshape((len(y_test), np.prod(y_test.shape[1:])))
 
-    AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
-                    validation_data=(x_test, y_test))
+    #AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
+    #                validation_data=(x_test, y_test))
 
     print(AutoEncoder.evaluate(x_test, y_test))
 
@@ -75,8 +74,8 @@ def auto_encoder(x_train, y_train, x_test, y_test, clr_lvl):
     decoded_test_images *= 255
     decoded_test_images = decoded_test_images.astype('uint8')
 
-    AutoEncoder.save('auto_encoder_' + clr_lvl + '.h5')
-    Encoder.save('encoder_' + clr_lvl + '.h5')
-    Decoder.save('decoder_' + clr_lvl + '.h5')
+    AutoEncoder.save('./models/auto_encoder_' + clr_lvl + '.h5')
+    Encoder.save('./models/encoder_' + clr_lvl + '.h5')
+    Decoder.save('./models/decoder_' + clr_lvl + '.h5')
 
     return decoded_train_images, decoded_test_images
