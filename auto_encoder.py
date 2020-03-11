@@ -1,42 +1,49 @@
 """ auto-encoder to map: image + clearance ==> original image """
 from keras.layers import Input, Dense
 from keras.models import Model
+from keras.models import load_model
 import numpy as np
+import os
 
 
-# TODO: save models and if they exist -- fit data to existing model
+# TODO: check if models already exist -- if True: train them rather the re-create them
 def auto_encoder(x_train, y_train, x_test, y_test, clr_lvl):
     """
         x_train / x_test: fashion_MNIST image + MNIST image
         y_train / y_test: original fashion_MNIST image
     """
-    encoding_dim = 32
-    input_img = Input(shape=(784, ))
-    
-    encoded = Dense(encoding_dim * 4, activation='relu')(input_img)
-    encoded = Dense(encoding_dim * 2, activation='relu')(encoded)
-    encoded = Dense(encoding_dim, activation='relu')(encoded)
-    
-    decoded = Dense(encoding_dim * 2, activation='relu')(encoded)
-    decoded = Dense(encoding_dim * 4, activation='relu')(decoded)
-    decoded = Dense(784, activation='sigmoid')(decoded)
-    
-    # model that maps the input to the reconstruction
-    AutoEncoder = Model(input_img, decoded)
-    
-    # model that maps the input to the encoding
-    Encoder = Model(input_img, encoded)
-    
-    encoded_input = Input(shape=(encoding_dim, ))
-    
-    decoder_layer1 = AutoEncoder.layers[-3]
-    decoder_layer2 = AutoEncoder.layers[-2]
-    decoder_layer3 = AutoEncoder.layers[-1]
-    
-    # model that maps the encoding to the reconstruction
-    Decoder = Model(encoded_input, decoder_layer3(decoder_layer2(decoder_layer1(encoded_input))))
-    
-    AutoEncoder.compile(optimizer='adadelta', loss='binary_crossentropy', metrics=['accuracy'])
+    if os.path.exists('./auto_encoder_' + clr_lvl + '.h5'):
+        AutoEncoder = load_model('./auto_encoder_' + clr_lvl + '.h5')
+        Encoder = load_model('./encoder_' + clr_lvl + '.h5')
+        Decoder = load_model('./decoder_' + clr_lvl + '.h5')
+    else:
+        encoding_dim = 32
+        input_img = Input(shape=(784, ))
+
+        encoded = Dense(encoding_dim * 4, activation='relu')(input_img)
+        encoded = Dense(encoding_dim * 2, activation='relu')(encoded)
+        encoded = Dense(encoding_dim, activation='relu')(encoded)
+
+        decoded = Dense(encoding_dim * 2, activation='relu')(encoded)
+        decoded = Dense(encoding_dim * 4, activation='relu')(decoded)
+        decoded = Dense(784, activation='sigmoid')(decoded)
+
+        # model that maps the input to the reconstruction
+        AutoEncoder = Model(input_img, decoded)
+
+        # model that maps the input to the encoding
+        Encoder = Model(input_img, encoded)
+
+        encoded_input = Input(shape=(encoding_dim, ))
+
+        decoder_layer1 = AutoEncoder.layers[-3]
+        decoder_layer2 = AutoEncoder.layers[-2]
+        decoder_layer3 = AutoEncoder.layers[-1]
+
+        # model that maps the encoding to the reconstruction
+        Decoder = Model(encoded_input, decoder_layer3(decoder_layer2(decoder_layer1(encoded_input))))
+
+        AutoEncoder.compile(optimizer='adadelta', loss='binary_crossentropy', metrics=['accuracy'])
     
     # normalize all values between 0 and 1 and flatten the 28x28 images into vectors of size 784
     x_train = x_train.astype('float32') / 255
