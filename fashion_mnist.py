@@ -1,12 +1,14 @@
 """ add the clearance levels to images and update labels """
 from keras.datasets import fashion_mnist
 from mnist import zeros, ones
-import numpy as np
 from random import randrange
+import numpy as np
 
 # unload fashion_MNIST
 (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
 
+
+########################################################################################################################
 
 # layers key (mnist digit [0,1]) over mnist image
 def clearance_level_zero(x, y):
@@ -45,13 +47,16 @@ def clearance_level_one(x, y):
     return clearance_images, clearance_labels
 
 
-train_0 = clearance_level_zero(x_train, y_train)
-test_0 = clearance_level_zero(x_test, y_test)
+########################################################################################################################
 
-train_1 = clearance_level_one(x_train, y_train)
-test_1 = clearance_level_one(x_test, y_test)
+x_train_clr0, y_train_clr0 = clearance_level_zero(x_train, y_train)
+x_test_clr0, y_test_clr0 = clearance_level_zero(x_test, y_test)
 
+x_train_clr1, y_train_clr1 = clearance_level_one(x_train, y_train)
+x_test_clr1, y_test_clr1 = clearance_level_one(x_test, y_test)
 
 # no clearance data set doesn't return any information (13 => 'No Clearance')
-y_train = np.ones(len(y_train)) * 13
-y_test = np.ones(len(y_test)) * 13
+x_train, y_train = x_train, np.ones(len(y_train)) * 13
+x_test, y_test = x_test, np.ones(len(y_test)) * 13
+
+########################################################################################################################

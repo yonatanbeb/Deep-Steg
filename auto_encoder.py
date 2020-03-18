@@ -55,10 +55,11 @@ def auto_encoder(x_train, y_train, x_test, y_test, clr_lvl):
     y_test = y_test.astype('float32') / 255
     y_test = y_test.reshape((len(y_test), np.prod(y_test.shape[1:])))
 
-    #AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
-    #                validation_data=(x_test, y_test))
+    if input('refit model?') == 'Y':
+        AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
+                        validation_data=(x_test, y_test))
 
-    print(AutoEncoder.evaluate(x_test, y_test))
+        print(AutoEncoder.evaluate(x_test, y_test))
 
     encoded_train_images = Encoder.predict(x_train)
     encoded_test_images = Encoder.predict(x_test)

@@ -1,35 +1,12 @@
-from fashion_mnist import train_0, train_1, test_0, test_1
+from fashion_mnist import x_train_clr0, x_test_clr0, x_train_clr1, x_test_clr1
+from fashion_mnist import y_train_clr0, y_test_clr0, y_train_clr1, y_test_clr1
 from fashion_mnist import x_train, x_test
 from fashion_mnist import y_train, y_test
 from auto_encoder import auto_encoder
 import numpy as np
 
-zero_clearance_train, zero_clearance_test = auto_encoder(train_0[0], x_train, test_0[0], x_test, '0')
-one_clearance_train, one_clearance_test = auto_encoder(train_1[0], x_train, test_1[0], x_test, '1')
 
-
-x_train_clr0 = zero_clearance_train
-y_train_clr0 = train_0[1]
-x_test_clr0 = zero_clearance_test
-y_test_clr0 = test_0[1]
-
-x_train_clr1 = one_clearance_train
-y_train_clr1 = train_1[1]
-x_test_clr1 = one_clearance_test
-y_test_clr1 = test_1[1]
-
-x_train
-y_train
-x_test
-y_test
-
-
-image_train = np.concatenate([x_train_clr0, x_train_clr1, x_train], axis=0)
-label_train = np.concatenate([y_train_clr0, y_train_clr1, y_train])
-
-image_test = np.concatenate([x_test_clr0, x_test_clr1, x_test], axis=0)
-label_test = np.concatenate([y_test_clr0, y_test_clr1, y_test])
-
+########################################################################################################################
 
 def get_shuffle_configuration(array):
     config = np.arange(array.shape[0])
@@ -37,11 +14,26 @@ def get_shuffle_configuration(array):
     return config
 
 
-train_config = get_shuffle_configuration(image_train)
-test_config = get_shuffle_configuration(image_test)
+########################################################################################################################
 
-image_train = image_train[train_config]
-label_train = label_train[train_config]
+# pass fashion_MNIST images with keys through the auto-encoder
+encoded_x_train_clr0, encoded_x_test_clr0 = auto_encoder(x_train_clr0, x_train, x_test_clr0, x_test, '0')
+encoded_x_train_clr1, encoded_x_test_clr1 = auto_encoder(x_train_clr1, x_train, x_test_clr1, x_test, '1')
 
-image_test = image_test[test_config]
-label_test = label_test[test_config]
+# connect sets with clearance 0, 1 and no clearance to one data set
+train_images = np.concatenate([encoded_x_train_clr0, encoded_x_train_clr1, x_train], axis=0)
+train_labels = np.concatenate([y_train_clr0, y_train_clr1, y_train])
+test_images = np.concatenate([encoded_x_test_clr0, encoded_x_test_clr1, x_test], axis=0)
+test_labels = np.concatenate([y_test_clr0, y_test_clr1, y_test])
+
+# create shuffling configuration
+train_config = get_shuffle_configuration(train_images)
+test_config = get_shuffle_configuration(test_images)
+
+# shuffle data sets
+train_images = train_images[train_config]
+train_labels = train_labels[train_config]
+test_images = test_images[test_config]
+test_labels = test_labels[test_config]
+
+########################################################################################################################
