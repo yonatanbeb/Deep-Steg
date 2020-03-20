@@ -7,6 +7,7 @@ from auto_encode_dataset import train_labels, test_labels
 import numpy as np
 import os
 
+########################################################################################################################
 
 labels = {
     # available output for clearance level 1
@@ -74,18 +75,21 @@ def classifier(x_train, y_train, x_test, y_test, num_of_classes=len(labels)):
     return Model
 
 
-def predict(index):
-    image = train_images[index]
+def predict(image):
+    Model = load_model('./models/classifier.h5')
     if K.image_data_format() == 'channels_first':
         image = image.reshape(1, 1, 28, 28)
     else:
         image = image.reshape(1, 28, 28, 1)
     image = image.astype('float32') / 255
 
-    return np.argmax(model.predict(image)) == train_labels[index]
+    return labels[int(np.argmax(Model.predict(image)))]
 
 
 ########################################################################################################################
 
 model = classifier(train_images, train_labels, test_images, test_labels)
 model.save('./models/classifier.h5')
+
+
+########################################################################################################################
