@@ -6,11 +6,13 @@ import numpy as np
 import os
 
 
+########################################################################################################################
+
 def auto_encoder(x_train, y_train, x_test, y_test, clearance_level):
-    if os.path.exists('./models/auto_encoder_' + str(clearance_level) + '.h5'):
-        AutoEncoder = load_model('./models/auto_encoder_' + str(clearance_level) + '.h5')
-        Encoder = load_model('./models/encoder_' + str(clearance_level) + '.h5')
-        Decoder = load_model('./models/decoder_' + str(clearance_level) + '.h5')
+    if os.path.exists(os.getcwd() + '/models/auto_encoder_' + str(clearance_level) + '.h5'):
+        AutoEncoder = load_model(os.getcwd() + '/models/auto_encoder_' + str(clearance_level) + '.h5')
+        Encoder = load_model(os.getcwd() + '/models/encoder_' + str(clearance_level) + '.h5')
+        Decoder = load_model(os.getcwd() + '/models/decoder_' + str(clearance_level) + '.h5')
     else:
         encoding_dim = 32
         input_img = Input(shape=(784,))
@@ -43,13 +45,14 @@ def auto_encoder(x_train, y_train, x_test, y_test, clearance_level):
     y_test = y_test.astype('float32') / 255
     y_test = y_test.reshape((len(y_test), np.prod(y_test.shape[1:])))
 
-    if input('refit model?') == 'Y':
-        AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
-                        validation_data=(x_test, y_test))
-        AutoEncoder.save('./models/auto_encoder_' + str(clearance_level) + '.h5')
-        Encoder.save('./models/encoder_' + str(clearance_level) + '.h5')
-        Decoder.save('./models/decoder_' + str(clearance_level) + '.h5')
-        print(AutoEncoder.evaluate(x_test, y_test))
+    AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
+                    validation_data=(x_test, y_test))
+
+    AutoEncoder.save(os.getcwd() + '/models/auto_encoder_' + str(clearance_level) + '.h5')
+    Encoder.save(os.getcwd() + '/models/encoder_' + str(clearance_level) + '.h5')
+    Decoder.save(os.getcwd() + '/models/decoder_' + str(clearance_level) + '.h5')
+
+    print(AutoEncoder.evaluate(x_test, y_test))
 
     encoded_train_images = Encoder.predict(x_train)
     encoded_test_images = Encoder.predict(x_test)
@@ -69,8 +72,8 @@ def auto_encoder(x_train, y_train, x_test, y_test, clearance_level):
 
 
 def auto_encode(image, clearance_level):
-    Encoder = load_model('./models/encoder_' + str(clearance_level) + '.h5')
-    Decoder = load_model('./models/decoder_' + str(clearance_level) + '.h5')
+    Encoder = load_model(os.getcwd() + '/models/encoder_' + str(clearance_level) + '.h5')
+    Decoder = load_model(os.getcwd() + '/models/decoder_' + str(clearance_level) + '.h5')
 
     encoded_image = encode_image_with_0(image) if clearance_level == 0 else encode_image_with_1(image)
     encoded_image = (encoded_image.astype('float32') / 255).reshape(1, 784)
@@ -82,3 +85,4 @@ def auto_encode(image, clearance_level):
 
     return auto_encoded_image
 
+########################################################################################################################

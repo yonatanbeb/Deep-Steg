@@ -1,4 +1,5 @@
 from auto_encoder import auto_encoder
+from classifier import classifier
 from encode_dataset import x_train, y_train, x_test, y_test
 from encode_dataset import encoded_x_train_clr0, encoded_y_train_clr0, encoded_x_test_clr0, encoded_y_test_clr0
 from encode_dataset import encoded_x_train_clr1, encoded_y_train_clr1, encoded_x_test_clr1, encoded_y_test_clr1
@@ -32,5 +33,9 @@ train_images = train_images[train_config]
 train_labels = train_labels[train_config]
 test_images = test_images[test_config]
 test_labels = test_labels[test_config]
+
+########################################################################################################################
+
+model = classifier(train_images, train_labels, test_images, test_labels)
 
 ########################################################################################################################

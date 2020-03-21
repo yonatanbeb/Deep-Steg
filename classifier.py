@@ -2,8 +2,6 @@ import keras
 from keras import backend as K
 from keras.models import Sequential, load_model
 from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
-from auto_encode_dataset import train_images, test_images
-from auto_encode_dataset import train_labels, test_labels
 import numpy as np
 import os
 
@@ -51,8 +49,8 @@ def classifier(x_train, y_train, x_test, y_test, num_of_classes=len(labels)):
     y_test = keras.utils.to_categorical(y_test, num_of_classes)
 
     # retrain model if exists, otherwise, create new model
-    if os.path.exists('./models/classifier.h5'):
-        Model = load_model('./models/classifier.h5')
+    if os.path.exists(os.getcwd() + '/models/classifier.h5'):
+        Model = load_model(os.getcwd() + '/models/classifier.h5')
     else:
         Model = Sequential()
 
@@ -72,12 +70,12 @@ def classifier(x_train, y_train, x_test, y_test, num_of_classes=len(labels)):
     Model.fit(x_train, y_train, batch_size=64, epochs=10, verbose=1, validation_data=(x_test, y_test))
     score = Model.evaluate(x_test, y_test, verbose=0)
     print('\n', 'Test Accuracy:', score[1])
-    Model.save('./models/classifier.h5')
+    Model.save(os.getcwd() + '/models/classifier.h5')
     return Model
 
 
 def predict(image):
-    Model = load_model('./models/classifier.h5')
+    Model = load_model(os.getcwd() + '/models/classifier.h5')
     if K.image_data_format() == 'channels_first':
         image = image.reshape(1, 1, 28, 28)
     else:
@@ -86,9 +84,5 @@ def predict(image):
 
     return labels[int(np.argmax(Model.predict(image)))]
 
-
-########################################################################################################################
-
-# model = classifier(train_images, train_labels, test_images, test_labels)
 
 ########################################################################################################################

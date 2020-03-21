@@ -1,4 +1,5 @@
 import json
+import os
 
 
 def main():
@@ -7,7 +8,8 @@ def main():
     with open('user_data/current_clearance_level.json', 'w') as current_clearance_level:
         current_clearance_level.write(current_clearance_level_json)
 
-    # TODO: change prompt to display original prompt
+    # TODO: make this change the prompt from the outside
+    os.system('PS1="$(tput setaf 196)mnist&Co@ : $(tput setaf 178)"')
 
 
 if __name__ == '__main__':
