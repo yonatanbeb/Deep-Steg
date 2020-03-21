@@ -10,7 +10,7 @@ def main():
     # TODO: enumerate 0 or 1
     parser.add_argument('clearance_level', type=int)
 
-    with open('profiles.json') as profiles_json:
+    with open('user_data/profiles.json') as profiles_json:
         profiles = json.load(profiles_json)
 
     args = parser.parse_args()
@@ -18,7 +18,7 @@ def main():
     if args.username not in profiles:
         profiles[args.username] = [args.password, args.clearance_level]
         profiles_json = json.dumps(profiles)
-        with open('profiles.json', 'w') as profiles:
+        with open('user_data/profiles.json', 'w') as profiles:
             profiles.write(profiles_json)
     else:
         print('Profile Exists')

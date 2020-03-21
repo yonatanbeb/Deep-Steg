@@ -72,6 +72,7 @@ def classifier(x_train, y_train, x_test, y_test, num_of_classes=len(labels)):
     Model.fit(x_train, y_train, batch_size=64, epochs=10, verbose=1, validation_data=(x_test, y_test))
     score = Model.evaluate(x_test, y_test, verbose=0)
     print('\n', 'Test Accuracy:', score[1])
+    Model.save('./models/classifier.h5')
     return Model
 
 
@@ -88,8 +89,6 @@ def predict(image):
 
 ########################################################################################################################
 
-model = classifier(train_images, train_labels, test_images, test_labels)
-model.save('./models/classifier.h5')
-
+# model = classifier(train_images, train_labels, test_images, test_labels)
 
 ########################################################################################################################

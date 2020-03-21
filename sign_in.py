@@ -9,7 +9,7 @@ def main():
 
     args = parser.parse_args()
 
-    with open('profiles.json') as profiles_json:
+    with open('user_data/profiles.json') as profiles_json:
         profiles = json.load(profiles_json)
 
     if args.username in profiles:
@@ -23,8 +23,10 @@ def main():
         print('Incorrect Username')
 
     current_clearance_level_json = json.dumps(current_clearance_level)
-    with open('current_clearance_level.json', 'w') as current_clearance_level:
+    with open('user_data/current_clearance_level.json', 'w') as current_clearance_level:
         current_clearance_level.write(current_clearance_level_json)
+
+    # TODO: change prompt to display current user
 
 
 if __name__ == '__main__':
