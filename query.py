@@ -1,13 +1,13 @@
 import argparse
 import json
 from fashion_mnist.fashion_mnist_to_png import images
-from auto_encoder import auto_encode
-from classifier import predict
+from neural_nets.auto_encoder import auto_encode
+from neural_nets.classifier import predict
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('index', type=int)
+    parser.add_argument('index', help='name of png file --> to see images type "python view.py"', type=int)
     args = parser.parse_args()
 
     with open('user_data/current_clearance_level.json') as current_clearance_level_json:

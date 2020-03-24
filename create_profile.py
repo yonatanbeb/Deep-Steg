@@ -7,8 +7,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('username', type=str)
     parser.add_argument('password', type=str)
-    # TODO: enumerate 0 or 1
-    parser.add_argument('clearance_level', type=int)
+    parser.add_argument('clearance_level', choices=[0, 1])
 
     with open('user_data/profiles.json') as profiles_json:
         profiles = json.load(profiles_json)

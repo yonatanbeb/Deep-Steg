@@ -3,19 +3,23 @@ import argparse
 import json
 from PIL import Image
 from fashion_mnist.fashion_mnist_to_png import images
-from auto_encoder import auto_encode
-from classifier import predict
+from neural_nets.auto_encoder import auto_encode
+from neural_nets.classifier import predict
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('label', type=str)
-    parser.add_argument('num', type=int)
-    parser.add_argument('to_path', type=str)
-    args = parser.parse_args()
-
     with open('user_data/current_clearance_level.json') as current_clearance_level_json:
         current_clearance_level = json.load(current_clearance_level_json)
+
+    parser = argparse.ArgumentParser()
+    if current_clearance_level == 1:
+        parser.add_argument('label', choices=['T-Shirt', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal',
+                                              'Shirt', 'Sneaker', 'Bag', 'Boot'])
+    else:
+        parser.add_argument('label', choices=['Top', 'Bottom', 'Shoe'])
+    parser.add_argument('num', default=1, type=int)
+    parser.add_argument('to_path', type=str)
+    args = parser.parse_args()
 
     if current_clearance_level == 'No Clearance':
         print('Unauthorized: No Clearance')

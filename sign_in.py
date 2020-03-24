@@ -28,7 +28,7 @@ def main():
         current_clearance_level.write(current_clearance_level_json)
 
     # TODO: make this change the prompt from the outside
-    os.system('PS1="$(tput setaf 196)mnist&Co@ $(tput setaf 202)' + args.username + ': $(tput setaf 178)"')
+    os.system('echo "$(tput setaf 196)mnist&Co@ $(tput setaf 202)' + args.username + ': $(tput setaf 178)" > prompt')
 
 
 if __name__ == '__main__':
