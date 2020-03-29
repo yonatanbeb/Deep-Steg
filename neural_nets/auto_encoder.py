@@ -5,15 +5,16 @@ from dataset_tools.encode_dataset import encode_image_with_0, encode_image_with_
 import numpy as np
 import os
 
+MODEL_PATH = os.path.abspath('../models')
+
 
 ########################################################################################################################
 
 def auto_encoder(x_train, y_train, x_test, y_test, clearance_level):
-    if os.path.exists('/home/yonatan/PycharmProjects/Deep-Steg/models/auto_encoder_' + str(clearance_level) + '.h5'):
-        print('retraining models')
-        AutoEncoder = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/auto_encoder_' + str(clearance_level) + '.h5')
-        Encoder = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/encoder_' + str(clearance_level) + '.h5')
-        Decoder = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/decoder_' + str(clearance_level) + '.h5')
+    if os.path.exists(MODEL_PATH + '/auto_encoder_' + str(clearance_level) + '.h5'):
+        AutoEncoder = load_model(MODEL_PATH + '/auto_encoder_' + str(clearance_level) + '.h5')
+        Encoder = load_model(MODEL_PATH + '/encoder_' + str(clearance_level) + '.h5')
+        Decoder = load_model(MODEL_PATH + '/decoder_' + str(clearance_level) + '.h5')
     else:
         encoding_dim = 32
         input_img = Input(shape=(784,))
@@ -46,12 +47,13 @@ def auto_encoder(x_train, y_train, x_test, y_test, clearance_level):
     y_test = y_test.astype('float32') / 255
     y_test = y_test.reshape((len(y_test), np.prod(y_test.shape[1:])))
 
+    print('\n \n \n \n Training AutoEncoder for clearance level ' + str(clearance_level))
     AutoEncoder.fit(x_train, y_train, batch_size=256, epochs=100, verbose=1, shuffle=True,
                     validation_data=(x_test, y_test))
 
-    AutoEncoder.save('/home/yonatan/PycharmProjects/Deep-Steg/models/auto_encoder_' + str(clearance_level) + '.h5')
-    Encoder.save('/home/yonatan/PycharmProjects/Deep-Steg/models/encoder_' + str(clearance_level) + '.h5')
-    Decoder.save('/home/yonatan/PycharmProjects/Deep-Steg/models/decoder_' + str(clearance_level) + '.h5')
+    AutoEncoder.save(MODEL_PATH + '/auto_encoder_' + str(clearance_level) + '.h5')
+    Encoder.save(MODEL_PATH + '/encoder_' + str(clearance_level) + '.h5')
+    Decoder.save(MODEL_PATH + '/decoder_' + str(clearance_level) + '.h5')
 
     print(AutoEncoder.evaluate(x_test, y_test))
 
@@ -73,8 +75,8 @@ def auto_encoder(x_train, y_train, x_test, y_test, clearance_level):
 
 
 def auto_encode(image, clearance_level):
-    Encoder = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/encoder_' + str(clearance_level) + '.h5')
-    Decoder = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/decoder_' + str(clearance_level) + '.h5')
+    Encoder = load_model(MODEL_PATH + '/encoder_' + str(clearance_level) + '.h5')
+    Decoder = load_model(MODEL_PATH + '/decoder_' + str(clearance_level) + '.h5')
 
     encoded_image = encode_image_with_0(image) if clearance_level == 0 else encode_image_with_1(image)
     encoded_image = (encoded_image.astype('float32') / 255).reshape(1, 784)

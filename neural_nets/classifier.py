@@ -5,10 +5,12 @@ from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense
 import numpy as np
 import os
 
+MODEL_PATH = os.path.abspath('../models')
+
 ########################################################################################################################
 
 labels = {
-    # available output for clearance level 1
+    # Clearance Level 1 Labels
     0: 'T-Shirt',
     1: 'Trouser',
     2: 'Pullover',
@@ -19,11 +21,11 @@ labels = {
     7: 'Sneaker',
     8: 'Bag',
     9: 'Boot',
-    # available output for clearance level 0
+    # Clearance Level 0 Labels
     10: 'Top',
     11: 'Bottom',
     12: 'Shoe',
-    # available output for no clearance level
+    # No Clearance Level Label
     13: 'No Clearance'
 }
 
@@ -49,8 +51,8 @@ def classifier(x_train, y_train, x_test, y_test, num_of_classes=len(labels)):
     y_test = keras.utils.to_categorical(y_test, num_of_classes)
 
     # retrain model if exists, otherwise, create new model
-    if os.path.exists('/home/yonatan/PycharmProjects/Deep-Steg/models/classifier.h5'):
-        Model = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/classifier.h5')
+    if os.path.exists(MODEL_PATH + '/classifier.h5'):
+        Model = load_model(MODEL_PATH + '/classifier.h5')
     else:
         Model = Sequential()
 
@@ -70,12 +72,12 @@ def classifier(x_train, y_train, x_test, y_test, num_of_classes=len(labels)):
     Model.fit(x_train, y_train, batch_size=64, epochs=10, verbose=1, validation_data=(x_test, y_test))
     score = Model.evaluate(x_test, y_test, verbose=0)
     print('\n', 'Test Accuracy:', score[1])
-    Model.save('/home/yonatan/PycharmProjects/Deep-Steg/models/classifier.h5')
+    Model.save(MODEL_PATH + '/classifier.h5')
     return Model
 
 
 def predict(image):
-    Model = load_model('/home/yonatan/PycharmProjects/Deep-Steg/models/classifier.h5')
+    Model = load_model(MODEL_PATH + '/classifier.h5')
     if K.image_data_format() == 'channels_first':
         image = image.reshape(1, 1, 28, 28)
     else:

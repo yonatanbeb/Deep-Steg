@@ -8,7 +8,6 @@ def main():
     with open('user_data/current_clearance_level.json', 'w') as current_clearance_level:
         current_clearance_level.write(current_clearance_level_json)
 
-    # TODO: make this change the prompt from the outside
     os.system('echo "$(tput setaf 196)mnist&Co@ : $(tput setaf 178)" > ./user_data/prompt')
 
 

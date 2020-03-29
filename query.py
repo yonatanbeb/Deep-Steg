@@ -7,7 +7,7 @@ from neural_nets.classifier import predict
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('index', help='name of png file --> to see images type "python view.py"', type=int)
+    parser.add_argument('index', type=int, help='Name of query image .png file --> to see images "view"')
     args = parser.parse_args()
 
     with open('user_data/current_clearance_level.json') as current_clearance_level_json:
