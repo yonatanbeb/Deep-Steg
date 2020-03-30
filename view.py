@@ -14,11 +14,11 @@ def main():
     args = parser.parse_args()
 
     if args.version is None:
-        os.system('xdg-open /original')
+        os.system('xdg-open datasets/original')
     elif args.zero:
-        os.system('xdg-open /' + args.version + '0')
+        os.system('xdg-open datasets/' + args.version + '0')
     else:
-        os.system('xdg-open /' + args.version + '1')
+        os.system('xdg-open datasets/' + args.version + '1')
 
 
 if __name__ == '__main__':
