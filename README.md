@@ -11,13 +11,13 @@ pip install -r requirements.txt
 
 ## Usage
 
-To train Deep Auto Encoded based Steganography models:
+To train Deep, Auto Encoder based, Steganography models, type:
 
 ```bash
 . ./train.sh
 ```
 
-If such models already exist, see evaluation by typing:
+If Steganography models already exist, see evaluation by typing:
 
 ```bash
 . ./evaluate.sh

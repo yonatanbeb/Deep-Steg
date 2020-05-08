@@ -1,3 +1,5 @@
+
+""" trains Classifier and AutoEncoder models  """
 from models.auto_encoder import auto_encoder
 from models.classifier import classifier
 from encode_dataset import x_train, y_train, x_test, y_test
@@ -7,6 +9,8 @@ import numpy as np
 
 ########################################################################################################################
 """ auto encode previously encoded datasets from encode_dataset.py """
+
+# THIS CALLS auto_encoder.py
 
 # auto encode with clearance level 0
 auto_encoded_x_train_clr0, auto_encoded_x_test_clr0 = auto_encoder(encoded_x_train_clr0, x_train,
@@ -28,6 +32,7 @@ test_labels = np.concatenate([encoded_y_test_clr0, encoded_y_test_clr1, y_test])
 
 def get_shuffle_configuration(array):
     """
+    returns symmetrical shuffling configuration for two arrays of the same size
     INPUT:
         array - numpy array
     OUTPUT:
@@ -52,6 +57,9 @@ test_labels = test_labels[test_config]
 ########################################################################################################################
 """ train Classifier model """
 
+# THIS CALLS classifier.py
+
+# train Classifier models
 model = classifier(train_images, train_labels, test_images, test_labels)
 
 ########################################################################################################################

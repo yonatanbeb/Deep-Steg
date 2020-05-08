@@ -1,3 +1,4 @@
+""" create and train Classifier model """
 import keras
 from keras import backend as K
 from keras.models import Sequential, load_model
@@ -7,7 +8,7 @@ import os
 ########################################################################################################################
 
 MODEL_PATH = os.path.abspath('models') if 'models' in os.listdir() else os.getcwd()
-
+# all labels (possible network outputs) for Classifier with String description
 labels = {
     # Clearance Level 1 Labels
     0: 'T-Shirt',
@@ -28,11 +29,13 @@ labels = {
     13: 'No Clearance'
 }
 
-
 ########################################################################################################################
+""" Classifier model training function """
+
 
 def classifier(x_train, y_train, x_test, y_test, train=True, evaluate=False, num_of_classes=len(labels)):
     """
+    trains Classifier model on mixed Auto Encoded dataset from auto_encode_dataset
     INPUT:
         x_train - numpy array of original, auto encoded with 0, and auto encoded with 1 fashion_mnist images
         y_train - numpy array of x_train labels

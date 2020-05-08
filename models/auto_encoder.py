@@ -1,3 +1,4 @@
+""" create and train AutoEncoder model """
 from keras.layers import Input, Dense
 from keras.models import Model
 from keras.models import load_model
@@ -9,10 +10,12 @@ import os
 MODEL_PATH = os.path.abspath('models') if 'models' in os.listdir() else os.getcwd()
 
 ########################################################################################################################
+""" AutoEncoder training function """
 
 
 def auto_encoder(x_train, y_train, x_test, y_test, clearance_level, train=True, evaluate=False):
     """
+    trains Auto Encoder models on encoded fashion_mnist ==> original fashion_mnist
     INPUT:
         x_train - numpy array of fashion_mnist encoded with clearance level for training
         y_train - numpy array of original fashion_mnist

@@ -1,3 +1,4 @@
+""" encodes fashion_mnist for model training in auto_encode_dataset """
 from keras.datasets import mnist, fashion_mnist
 import numpy as np
 from random import randrange
@@ -27,6 +28,8 @@ ones = np.asarray(ones, dtype=np.uint8)
 
 def encode_0(x, y):
     """
+    encodes fashion_mnist, with mnist images of the digit 0, by performing matrix addition
+    and updating the labels to the general labels: Top, Bottom, and Shoe.
     INPUT:
         x - numpy array of fashion_mnist images
         y - numpy array of labels for x
@@ -64,6 +67,7 @@ def encode_0(x, y):
 
 def encode_1(x, y):
     """
+    encodes fashion_mnist, with mnist images of the digit 1, by performing matrix addition
         INPUT:
             x - numpy array of fashion_mnist images
             y - numpy array of labels for x
